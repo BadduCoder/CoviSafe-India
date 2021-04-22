@@ -34,18 +34,22 @@ class RequirementListView(APIView):
 
 class RequirementDetailView(APIView):
 
-    def get(self, request, pk, format=None):
+    def get(self, request, pk):
         try:
             requirement = Requirement.objects.get(pk=pk)
+            if not requirement.is_active:
+                return Response("Requirement doesn't exists", status=status.HTTP_404_NOT_FOUND)
             requirement_serialized = RequirementSerializer(requirement)
             return Response(requirement_serialized.data, status=status.HTTP_200_OK)
         except Requirement.DoesNotExist:
             return Response("Requirement doesn't exists", status=status.HTTP_404_NOT_FOUND)
 
-    def put(self, request, pk, format=None):
+    def put(self, request, pk):
         try:
             requirement = Requirement.objects.get(pk=pk)
         except Requirement.DoesNotExist:
+            return Response("Requirement doesn't exists", status=status.HTTP_404_NOT_FOUND)
+        if not requirement.is_active:
             return Response("Requirement doesn't exists", status=status.HTTP_404_NOT_FOUND)
 
         address_data = request.data.pop('address')
@@ -63,9 +67,12 @@ class RequirementDetailView(APIView):
             return Response(requirement_serialized.data, status=status.HTTP_201_CREATED)
         return Response(requirement_serialized.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, pk, format=None):
+    def delete(self, request, pk):
         try:
             requirement = Requirement.objects.get(pk=pk)
+            if not requirement.is_active:
+                return Response("Requirement doesn't exists", status=status.HTTP_404_NOT_FOUND)
+
             requirement.is_active = False
             requirement.save(update_fields=['is_active'])
             return Response("Requirement deleted successfully", status.HTTP_200_OK)
