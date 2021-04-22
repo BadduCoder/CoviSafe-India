@@ -18,8 +18,8 @@ class Supply(BaseModel):
 
     supply_type = models.CharField(max_length=3,choices=SUPPLY_TYPES)
     supply_desc = models.CharField(max_length=264)
-    primary_contact = models.IntegerField()
-    secondary_contact = models.IntegerField(null=True, blank=True)
+    primary_contact = models.CharField(max_length=10)
+    secondary_contact = models.CharField(max_length=10, null=True, blank=True)
     email = models.CharField(max_length=64, null=True, blank=True)
     supplier_name = models.CharField(max_length=128)
     quantity_remaining = models.CharField(max_length=10)
