@@ -48,9 +48,18 @@ class RequirementDetailView(APIView):
         except Requirement.DoesNotExist:
             return Response("Requirement doesn't exists", status=status.HTTP_404_NOT_FOUND)
 
+        address_data = request.data.pop('address')
+        existing_address = requirement.address
+        address = AddressSerializer(existing_address, data=address_data, partial=True)
+        if address.is_valid():
+            address.save()
+        else:
+            return Response(address.errors, status=status.HTTP_400_BAD_REQUEST)
+
         requirement_serialized = RequirementSerializer(requirement, data=request.data, partial=True)
         if requirement_serialized.is_valid():
             requirement_serialized.save()
+
             return Response(requirement_serialized.data, status=status.HTTP_201_CREATED)
         return Response(requirement_serialized.errors, status=status.HTTP_400_BAD_REQUEST)
 
