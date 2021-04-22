@@ -1,7 +1,8 @@
 from django.db import models
-from Common.models import Common
+from Common.models import BaseModel
 
-class Supplies(Common):
+
+class Supply(BaseModel):
 
     PLASMA = "PLM"
     BLOOD = "BLD"
@@ -17,11 +18,10 @@ class Supplies(Common):
 
     supply_type = models.CharField(max_length=3,choices=SUPPLY_TYPES)
     supply_desc = models.CharField(max_length=264)
-    primary_contact = models.IntegerField(max_length=10)
-    secondary_contact = models.IntegerField(max_length=10, null=True, blank=True)
+    primary_contact = models.IntegerField()
+    secondary_contact = models.IntegerField(null=True, blank=True)
     email = models.CharField(max_length=64, null=True, blank=True)
     supplier_name = models.CharField(max_length=128)
-    is_active = models.BooleanField(default=False)
     quantity_remaining = models.CharField(max_length=10)
     address = models.ForeignKey(to='Common.Address', on_delete=models.CASCADE)
 
