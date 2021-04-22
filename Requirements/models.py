@@ -1,13 +1,12 @@
 from django.db import models
-from Common.models import Common
+from Common.models import BaseModel
 
 
-class Requirement(Common):
+class Requirement(BaseModel):
 
     PLASMA = "PLM"
     BLOOD = "BLD"
     OXYGEN = "OXY"
-
 
     REQUIREMENT_TYPES = (
         (PLASMA, "Plasma"),
@@ -17,8 +16,8 @@ class Requirement(Common):
 
     requirement_type = models.CharField(max_length=3,choices=REQUIREMENT_TYPES)
     requirement_desc = models.CharField(max_length=64)
-    primary_contact = models.IntegerField(max_length=10)
-    secondary_contact = models.IntegerField(max_length=10, null=True, blank=True)
+    primary_contact = models.IntegerField()
+    secondary_contact = models.IntegerField(null=True, blank=True)
     email = models.CharField(max_length=64, null=True, blank=True)
     patient_name = models.CharField(max_length=128)
     fulfilled = models.BooleanField(default=False)
