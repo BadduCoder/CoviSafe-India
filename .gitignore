@@ -3,6 +3,7 @@
 
 # Virtual env
 env/
+venv/
 
 # Cache files
 *.pyc
