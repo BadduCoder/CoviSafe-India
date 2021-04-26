@@ -5,6 +5,7 @@ from django.db.models import Q
 
 from .models import Supply
 from .serializers import SupplyListSerializer
+from .constants import SupplyConstants
 from Common.serializers import AddressSerializer
 
 
@@ -13,18 +14,16 @@ class SupplyListView(APIView):
     def get(self, request):
         # Fetch filters from url
 
-        print(request.user.id)
-
-
-        requirement_type = self.request.query_params.get('r_type', None)
+        supply_type = self.request.query_params.get('r_type', None)
         city = self.request.query_params.get('city', None)
 
         all_supplies = Supply.objects.filter(is_active=True)
 
-        if requirement_type is not None:
-            all_supplies = all_supplies.filter(supply_type=requirement_type)
+        if supply_type is not None:
+            supply_filter = SupplyConstants.R_TYPE_TO_SUPPLIES_MAPPING[supply_type] or None
+            all_supplies = all_supplies.filter(supply_type__in=supply_filter)
         if city is not None:
-            all_supplies = all_supplies.filter(address__city=city)
+            all_supplies = all_supplies.filter(address__city__icontains=city)
 
         supplies_data = SupplyListSerializer(all_supplies, many=True)
         return Response(supplies_data.data, status=status.HTTP_200_OK)
