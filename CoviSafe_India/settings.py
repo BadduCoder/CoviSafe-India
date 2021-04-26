@@ -87,20 +87,6 @@ SOCIALACCOUNT_PROVIDERS = {
 WSGI_APPLICATION = 'CoviSafe_India.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'covisafe_india',
-        'USER': 'postgres',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-    }
-}
-
-
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
