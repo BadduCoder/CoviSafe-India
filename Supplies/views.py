@@ -15,12 +15,12 @@ class SupplyListView(APIView):
         # Fetch filters from url
 
         supply_type = self.request.query_params.get('r_type', None)
+        supply_filter = SupplyConstants.R_TYPE_TO_SUPPLIES_MAPPING.get(supply_type, [])
         city = self.request.query_params.get('city', None)
 
         all_supplies = Supply.objects.filter(is_active=True)
 
-        if supply_type is not None:
-            supply_filter = SupplyConstants.R_TYPE_TO_SUPPLIES_MAPPING[supply_type] or None
+        if supply_filter is not None:
             all_supplies = all_supplies.filter(supply_type__in=supply_filter)
         if city is not None:
             all_supplies = all_supplies.filter(address__city__icontains=city)
