@@ -12,6 +12,10 @@ class SupplyListView(APIView):
 
     def get(self, request):
         # Fetch filters from url
+
+        print(request.user.id)
+
+
         requirement_type = self.request.query_params.get('r_type', None)
         city = self.request.query_params.get('city', None)
 
